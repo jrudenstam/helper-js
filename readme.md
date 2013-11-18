@@ -1,2 +1,2 @@
 # Make more vanilla JS
-I use this helper to support som of the most common browser inconsistencies and lack of native functionality.
+I use this helper to support som of the most common browser inconsistencies and lack of native functionality. Written as a AMD module to be easy to hook up to your require.js project.
