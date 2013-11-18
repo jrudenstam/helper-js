@@ -1,0 +1,16 @@
+<html>
+<head>
+<script type="text/javascript" src="../helper.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	helper.jsonp('http://ip.jsontest.com/', function(data){
+		console.log(data.ip);
+	});
+	helper.jsonp('http://date.jsontest.com/', function(data){
+		console.log(data.time);
+	});
+}
+</script>
+</head>
+<body></body>
+</html>
