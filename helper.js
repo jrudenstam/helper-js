@@ -288,13 +288,13 @@ define(function(){
 			req.send(data);
 		},
 		jsonpCallback:function(callback){
-			window['jsonpCallback_'+this.jsonpCount]=(function(counter){
+			window['jsonpCallback_'+this.jsonpCount]=(function(counter, cb){
 				return function(data){
 					var newScript=document.getElementById('jsonpScript_'+counter);
 					newScript.parentNode.removeChild(newScript);
-					callback(data);
+					cb(data);
 				}
-			})(this.jsonpCount);
+			})(this.jsonpCount, callback);
 			return 'jsonpCallback_'+this.jsonpCount;
 		},
 		jsonpCount:0,
