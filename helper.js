@@ -287,15 +287,15 @@ define(function(){
 
 			req.send(data);
 		},
-		createJsonpCallback:function(callback, count){
-			window['jsonpCallback_'+count]=(function(counter){
+		jsonpCallback:function(callback){
+			window['jsonpCallback_'+this.jsonpCount]=(function(counter){
 				return function(data){
-					var newScript=document.getElementById('jsonpscript_'+counter);
+					var newScript=document.getElementById('jsonpScript_'+counter);
 					newScript.parentNode.removeChild(newScript);
 					callback(data);
 				}
-			})(count);
-			return 'jsonpCallback_'+count;
+			})(this.jsonpCount);
+			return 'jsonpCallback_'+this.jsonpCount;
 		},
 		jsonpCount:0,
 		jsonp: function( url, callback, data ) {
@@ -307,7 +307,7 @@ define(function(){
 
 			this.jsonpCount++;
 			newScript.id="jsonpScript_"+this.jsonpCount;
-			data.callback = this.createJsonpCallback(callback, this.jsonpCount);
+			data.callback = this.jsonpCallback(callback);
 
 			for(var paramName in data){  
 				params.push(paramName + "=" + encodeURIComponent(data[paramName]));
