@@ -307,7 +307,7 @@ define(function(){
 
 			this.jsonpCount++;
 			newScript.id="jsonpScript_"+this.jsonpCount;
-			data.callback = this.jsonpCallbacks.create(callback, this.jsonpCount);
+			data.callback = this.createJsonpCallback(callback, this.jsonpCount);
 
 			for(var paramName in data){  
 				params.push(paramName + "=" + encodeURIComponent(data[paramName]));
