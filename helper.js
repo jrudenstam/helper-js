@@ -287,9 +287,17 @@ define(function(){
 
 			req.send(data);
 		},
-
-		jsonpCallback: function(){},
-
+		createJsonpCallback:function(callback, count){
+			window['jsonpCallback_'+count]=(function(counter){
+				return function(data){
+					var newScript=document.getElementById('jsonpscript_'+counter);
+					newScript.parentNode.removeChild(newScript);
+					callback(data);
+				}
+			})(count);
+			return 'jsonpCallback_'+count;
+		},
+		jsonpCount:0,
 		jsonp: function( url, callback, data ) {
 			var data = data || {},
 			src = url + (url.indexOf("?")+1 ? "&" : "?"),
@@ -297,8 +305,9 @@ define(function(){
 			newScript = document.createElement("script"),
 			params = [];
 
-			this.jsonpCallback = callback;
-			data.callback = 'this.jsonpCallback';
+			this.jsonpCount++;
+			newScript.id="jsonpScript_"+this.jsonpCount;
+			data.callback = this.jsonpCallbacks.create(callback, this.jsonpCount);
 
 			for(var paramName in data){  
 				params.push(paramName + "=" + encodeURIComponent(data[paramName]));
