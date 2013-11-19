@@ -9,9 +9,10 @@
  * Author: jrudenstam
  * http://typisktmig.se
  */
-
-define(function(){
-	var helper = {
+(function(definition){
+if(typeof define==="function"){define(definition);}
+else{this["helper"]=definition}
+})({
 		// http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript
 		isNodeList: function( nodes ) {
 			var result = Object.prototype.toString.call(nodes);
@@ -287,9 +288,17 @@ define(function(){
 
 			req.send(data);
 		},
-
-		jsonpCallback: function(){},
-
+		jsonpCallback:function( callback ){
+			window.cbs = window.cbs || [];
+			window.cbs.push((function(cb, count){
+				return function(data){
+					var newScript=document.getElementById('jsonpScript_'+count);
+					newScript.parentNode.removeChild(newScript);
+					cb(data);
+				}
+			})(callback, window.cbs.length));
+			return 'window.cbs['+(window.cbs.length-1)+']';
+		},
 		jsonp: function( url, callback, data ) {
 			var data = data || {},
 			src = url + (url.indexOf("?")+1 ? "&" : "?"),
@@ -297,8 +306,8 @@ define(function(){
 			newScript = document.createElement("script"),
 			params = [];
 
-			this.jsonpCallback = callback;
-			data.callback = 'this.jsonpCallback';
+			data.callback = this.jsonpCallback(callback);
+			newScript.id="jsonpScript_"+(window.cbs.length-1);
 
 			for(var paramName in data){  
 				params.push(paramName + "=" + encodeURIComponent(data[paramName]));
@@ -310,7 +319,4 @@ define(function(){
 
 			head.appendChild(newScript); 
 		}
-	}
-
-	return helper;
-});
+	});
