@@ -142,6 +142,17 @@
 		}
 	})(),
 
+	// Traverse the DOM upward until filter function returns true
+	// filter function runs in context passed to up()
+	up: function( startNode, filterFunction, ctx ) {
+		ctx = ctx || this;
+		if (filterFunction.apply(ctx, [startNode])) {
+			return startNode;
+		} else {
+			return this.up(startNode.parentNode, filterFunction, ctx);
+		}
+	},
+
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create?redirectlocale=en-US&redirectslug=JavaScript%2FReference%2FGlobal_Objects%2FObject%2Fcreate
 	create: (function(){
 		if (!Object.create) {
