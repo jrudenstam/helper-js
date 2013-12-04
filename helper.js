@@ -9,13 +9,13 @@
  * Author: jrudenstam
  * http://typisktmig.se
  */
-(function(definition){
+(function(definition, ctx){
 	"use strict";
 
 	if (typeof define === "function") {
 		define(definition);
 	} else {
-		this["helper"] = definition;
+		ctx["helper"] = definition;
 	}
 })({
 	// http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript
@@ -337,4 +337,4 @@
 
 		head.appendChild(newScript); 
 	}
-});
+}, this);
