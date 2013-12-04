@@ -1,8 +1,0 @@
-/*
- * helper v0.1
- * Production build. Take a look at the 
- * source by removing the “.min” part of the URL.
- *
- * Author: jrudenstam
- * http://typisktmig.se
- */

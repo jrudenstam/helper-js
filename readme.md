@@ -13,6 +13,7 @@ If you don´t use require.js the module will expose as <code>window.helper</code
 - removeClass( ele, class )
 - getByAttr( searchAttr, node, single )
 - create( prototype )
+- up( startNode, filterFunction, context )
 - addEvent( node, type, callback, contextToRunCbIn )
 - removeEvent( objectReturnedByAddEvent )
 - ajax( url, callback, data, async )

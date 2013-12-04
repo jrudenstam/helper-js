@@ -1,5 +1,5 @@
 /*
- * helper v0.1
+ * Helper JS v0.1
  * Simple vanilla JS offering
  * some common helpers to accompany
  * your vanilla JS:ing. Some is written
@@ -15,7 +15,7 @@
 	if (typeof define === "function") {
 		define(definition);
 	} else {
-		this["helper"] = definition
+		this["helper"] = definition;
 	}
 })({
 	// http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript
@@ -148,8 +148,10 @@
 		ctx = ctx || this;
 		if (filterFunction.apply(ctx, [startNode])) {
 			return startNode;
-		} else {
+		} else if(startNode.parentNode && startNode.parentNode !== document) {
 			return this.up(startNode.parentNode, filterFunction, ctx);
+		} else {
+			return false;
 		}
 	},
 
