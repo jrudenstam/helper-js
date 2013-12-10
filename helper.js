@@ -306,6 +306,7 @@
 
 		req.send(data);
 	},
+
 	jsonpCallback:function( callback ){
 		window.cbs = window.cbs || [];
 		window.cbs.push((function(cb, count){
@@ -317,6 +318,7 @@
 		})(callback, window.cbs.length));
 		return 'window.cbs['+(window.cbs.length-1)+']';
 	},
+
 	jsonp: function( url, callback, data ) {
 		var data = data || {},
 		src = url + (url.indexOf("?")+1 ? "&" : "?"),
@@ -336,5 +338,22 @@
 		newScript.src = src;
 
 		head.appendChild(newScript); 
+	},
+
+	// http://stackoverflow.com/questions/871399/cross-browser-method-for-detecting-the-scrolltop-of-the-browser-window
+	scrollTop: function( el ) {
+		// If el is window and browser support pageYOffset
+		if (el === window) {
+			if (typeof pageYOffset!= 'undefined') {
+				return pageYOffset;
+			} else {
+				var B= document.body, //IE 'quirks'
+				D= document.documentElement; //IE with doctype
+				D = (D.clientHeight) ? D : B;
+				return D.scrollTop;
+			}
+		} else {
+			return el.scrollTop;
+		}
 	}
 }, this);
