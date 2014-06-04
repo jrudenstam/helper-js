@@ -198,11 +198,10 @@
 			}
 		})(),
 
-		addEvent: function(node, type, callback, ctx) {
-			var ctx = ctx || window,
-			wrapCallback = (function( helper ){
+		addEvent: function(node, type, callback, sender) {
+			var wrapCallback = (function( helper ){
 				return function( event ){
-					callback.apply(ctx, [helper.normaliseEvent(event || window.event)]);
+					callback.apply(this, [helper.normaliseEvent(event || window.event), sender]);
 				}
 			})(this);
 
