@@ -34,7 +34,7 @@
 		 * http://www.dustindiaz.com/getelementsbyclass
 		 */
 		getByClass: (function() {
-			if (document.getElementsByClassName) {
+			if (root.document.getElementsByClassName) {
 				return function( searchClass, node, single ) {
 					if (single) {
 						return node.getElementsByClassName(searchClass)[0];
@@ -47,7 +47,7 @@
 					var classElements = [],
 						tag = '*';
 					if (node == null) {
-						node = document;
+						node = root.document;
 					}
 					var els = node.getElementsByTagName(tag);
 					var elsLen = els.length;
@@ -107,9 +107,9 @@
 		},
 
 		getByAttr: (function(){
-			if(document.querySelector && document.querySelectorAll){
+			if(root.document.querySelector && root.document.querySelectorAll){
 				return function( searchAttr, node, single ) {
-					var node = node || document;
+					var node = node || root.document;
 					if (single) {
 						return node.querySelector('['+searchAttr+']');
 					} else {
@@ -118,7 +118,7 @@
 				};
 			} else {
 				return function( searchAttr, node, single ) {
-					var node = node || document,
+					var node = node || root.document,
 					attrElements = [],
 					tag = '*',
 					els = node.getElementsByTagName(tag),
@@ -149,7 +149,7 @@
 			ctx = ctx || this;
 			if (filterFunction.apply(ctx, [startNode])) {
 				return startNode;
-			} else if(startNode.parentNode && startNode.parentNode !== document) {
+			} else if(startNode.parentNode && startNode.parentNode !== root.document) {
 				return this.up(startNode.parentNode, filterFunction, ctx);
 			} else {
 				return false;
@@ -175,11 +175,11 @@
 		})(),
 
 		registerEventHandler: (function(){
-			if ( document.addEventListener ) {
+			if ( root.document.addEventListener ) {
 				return function( node, type, callback ){
 					node.addEventListener(type, callback, false );
 				};
-			} else if ( document.attachEvent ){
+			} else if ( root.document.attachEvent ){
 				return function( node, type, callback ) {
 					node.attachEvent( 'on' + type, callback );
 				};
@@ -187,11 +187,11 @@
 		})(),
 
 		unregisterEventHandler: (function(){
-			if ( document.addEventListener ) {
+			if ( root.document.addEventListener ) {
 				return function( node, type, callback ){
 					node.removeEventListener(type, callback, false );
 				};
-			} else if ( document.attachEvent ){
+			} else if ( root.document.attachEvent ){
 				return function( node, type, callback ) {
 					node.detachEvent( 'on' + type, callback );
 				};
@@ -199,10 +199,10 @@
 		})(),
 
 		addEvent: function(node, type, callback, ctx) {
-			var ctx = ctx || window,
+			var ctx = ctx || root,
 			wrapCallback = (function( helper ){
 				return function( event ){
-					callback.apply(ctx, [helper.normaliseEvent(event || window.event)]);
+					callback.apply(ctx, [helper.normaliseEvent(event || root.event)]);
 				}
 			})(this);
 
@@ -309,26 +309,26 @@
 		},
 
 		jsonpCallback:function( callback ){
-			window.cbs = window.cbs || [];
-			window.cbs.push((function(cb, count){
+			root.cbs = root.cbs || [];
+			root.cbs.push((function(cb, count){
 				return function(data){
-					var newScript=document.getElementById('jsonpScript_'+count);
+					var newScript=root.document.getElementById('jsonpScript_'+count);
 					newScript.parentNode.removeChild(newScript);
 					cb(data);
 				}
-			})(callback, window.cbs.length));
-			return 'window.cbs['+(window.cbs.length-1)+']';
+			})(callback, root.cbs.length));
+			return 'root.cbs['+(root.cbs.length-1)+']';
 		},
 
 		jsonp: function( url, callback, data ) {
 			var data = data || {},
 			src = url + (url.indexOf("?")+1 ? "&" : "?"),
-			head = document.getElementsByTagName("head")[0],
-			newScript = document.createElement("script"),
+			head = root.document.getElementsByTagName("head")[0],
+			newScript = root.document.createElement("script"),
 			params = [];
 
 			data.callback = this.jsonpCallback(callback);
-			newScript.id="jsonpScript_"+(window.cbs.length-1);
+			newScript.id="jsonpScript_"+(root.cbs.length-1);
 
 			for(var paramName in data){  
 				params.push(paramName + "=" + encodeURIComponent(data[paramName]));
@@ -341,15 +341,15 @@
 			head.appendChild(newScript); 
 		},
 
-		// http://stackoverflow.com/questions/871399/cross-browser-method-for-detecting-the-scrolltop-of-the-browser-window
+		// http://stackoverflow.com/questions/871399/cross-browser-method-for-detecting-the-scrolltop-of-the-browser-root
 		scrollTop: function( el ) {
-			// If el is window and browser support pageYOffset
-			if (el === window) {
+			// If el is root and browser support pageYOffset
+			if (el === root) {
 				if (typeof pageYOffset!= 'undefined') {
 					return pageYOffset;
 				} else {
-					var B= document.body, //IE 'quirks'
-					D= document.documentElement; //IE with doctype
+					var B= root.document.body, //IE 'quirks'
+					D= root.document.documentElement; //IE with doctype
 					D = (D.clientHeight) ? D : B;
 					return D.scrollTop;
 				}
