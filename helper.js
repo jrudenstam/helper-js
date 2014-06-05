@@ -264,15 +264,16 @@
 			return xmlhttp;
 		})(),
 
-		ajax: function( url, callback, data, async ) {
+		ajax: function( url, callback, data, async, ctx, args ) {
 			var method = data ? 'POST' : 'GET', // Default to 'GET'
 			async = async || true, // Default to async mode
-			req = this.ajaxObject();
+			req = this.ajaxObject(),
+			ctx = ctx || window;
 
 			if (!req) {
 				return;
 			}
-			
+
 			req.open(method,url,async);
 
 			// Set extra headers passed to ajax()
@@ -297,7 +298,10 @@
 					return;
 				}
 
-				callback(req);
+				/*
+				 * Pass on any extra arguments the callback
+				 */
+				callback.apply(ctx, [req, args]);
 			}
 
 			if (req.readyState == 4) {
