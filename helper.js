@@ -106,6 +106,14 @@
 			}
 		},
 
+		toggleClass: function( ele, classN ) {
+			if (this.hasClass(ele, classN)) {
+				this.removeClass(ele, classN);
+			} else {
+				this.addClass(ele, classN);
+			}
+		},
+
 		getByAttr: (function(){
 			if(document.querySelector && document.querySelectorAll){
 				return function( searchAttr, node, single ) {

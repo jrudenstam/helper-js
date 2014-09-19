@@ -11,6 +11,7 @@ If you don´t use require.js the module will expose as <code>window.helper</code
 - hasClass( ele, class )
 - addClass( ele, class )
 - removeClass( ele, class )
+- toggleCLass( ele, class )
 - getByAttr( searchAttr, node, single )
 - create( prototype )
 - up( startNode, filterFunction, context )
