@@ -1,5 +1,5 @@
 /*
- * Helper JS v0.1
+ * Helper JS v0.12
  * Simple vanilla JS offering
  * some common helpers to accompany
  * your vanilla JS:ing. Some is written
@@ -45,14 +45,11 @@
 			} else {
 				return function( searchClass, node, single ) {
 					var classElements = [],
-						tag = '*';
-					if (node == null) {
-						node = document;
-					}
-					var els = node.getElementsByTagName(tag);
-					var elsLen = els.length;
-					var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-					for (var i = 0, j = 0; i < elsLen; i++) {
+					node = node == null ? document : node,
+					els = node.getElementsByTagName('*'),
+					pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+
+					for (var i = 0, j = 0; i < els.length; i++) {
 						if ( pattern.test(els[i].className) ) {
 							if (single) {
 								return els[i];
@@ -62,7 +59,9 @@
 							}
 						}
 					}
-					return classElements;
+
+					// To be consistent with getElementsByClassName-implementation
+					return classElements.length<1 && single ? undefined : classElements;
 				};
 			}
 		})(),
@@ -169,13 +168,17 @@
 			if (!Object.create) {
 				function F(){};
 
-				return function( prototype ){
-					if (arguments.length != 1) {
-						throw new Error('Object.create implementation only accepts one parameter.');
+				return function( prototype, properties ){
+					F.prototype = prototype;
+					var r = new F();
+
+					if ( properties ) {
+						for ( var prop in properties ) {
+							r[prop] = properties[prop];
+						}
 					}
 
-					F.prototype = prototype;
-					return new F();
+					return r;
 				}
 			} else {
 				return Object.create;
@@ -189,7 +192,9 @@
 				};
 			} else if ( document.attachEvent ){
 				return function( node, type, callback ) {
-					node.attachEvent( 'on' + type, callback );
+					node.attachEvent( 'on' + type, function( event ){
+						callback.apply(node, [event]);
+					} );
 				};
 			}
 		})(),
