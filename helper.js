@@ -84,9 +84,13 @@
 			return result;
 		},
 
+		// padding on classes to not match substrings in classnames
+		// https://github.com/jquery/jquery/blob/master/src/attributes/classes.js
 		hasClass: function( ele, classN ) {
-			var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
-			return (classes.search(classN) > -1);
+			var rclass = /[\t\r\n\f]/g,
+			classN = ' ' + classN + ' ';
+			classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || '';
+			return ( (' ' + classes + ' ').replace(rclass, ' ').indexOf( classN ) > -1 );
 		},
 
 		addClass: function( ele, classN ) {
