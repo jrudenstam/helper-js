@@ -28,6 +28,29 @@
 			return false;
 		},
 
+		// https://davidwalsh.name/nodelist-array
+		// https://toddmotto.com/a-comprehensive-dive-into-nodelists-arrays-converting-nodelists-and-understanding-the-dom/
+		nodeListToArray: (function(){
+			if( typeof(window.NodeList) != 'function' ) {
+				return function( nodeList ) {
+					var l = [];
+
+					for (var i = 0; i < nodeList.length; i++) {
+						l.push(nodeList[i]);
+					};
+
+					return l;
+				}
+
+			} else {
+
+				return function( nodeList ) {
+					return [].slice.call( nodeList );
+				}
+
+			}
+		})(),
+
 		/*
 		 * Cross browser getElementsByClassName, which uses native
 		 * if it exists. Modified version of Dustin Diaz function:
