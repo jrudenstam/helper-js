@@ -108,15 +108,15 @@
 
 		// padding on classes to not match substrings in classnames
 		// https://github.com/jquery/jquery/blob/master/src/attributes/classes.js
-		hasClass: function( ele, classN ) {
+		hasClass: function( classN, ele ) {
 			var rclass = /[\t\r\n\f]/g,
 			classN = ' ' + classN + ' ';
 			classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || '';
 			return ( (' ' + classes + ' ').replace(rclass, ' ').indexOf( classN ) > -1 );
 		},
 
-		addClass: function( ele, classN ) {
-			if (!this.hasClass(ele, classN)) {
+		addClass: function( classN, ele ) {
+			if (!this.hasClass(classN, ele)) {
 				var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
 				classes = classes + ' ' + classN + ' ';
 				classes = classes.replace(/\s{2,}/g, ' ');
@@ -124,19 +124,19 @@
 			}
 		},
 
-		removeClass: function( ele, classN ) {
-			if (this.hasClass(ele, classN)) {
+		removeClass: function( classN, ele ) {
+			if (this.hasClass(classN, ele)) {
 				var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
 				classes = classes.replace(classN, '');
 				ele.setAttribute('class', classes);
 			}
 		},
 
-		toggleClass: function( ele, classN ) {
-			if (this.hasClass(ele, classN)) {
-				this.removeClass(ele, classN);
+		toggleClass: function( classN, ele ) {
+			if (this.hasClass(classN, ele)) {
+				this.removeClass(classN, ele);
 			} else {
-				this.addClass(ele, classN);
+				this.addClass(classN, ele);
 			}
 		},
 
