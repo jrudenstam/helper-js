@@ -304,8 +304,8 @@
 			return xmlhttp;
 		})(),
 
-		ajax: function( url, callback, data, async, ctx, args ) {
-			var method = data ? 'POST' : 'GET', // Default to 'GET'
+		ajax: function( url, callback, data, async, ctx, args, method ) {
+			var method = method || 'GET', // Default to 'GET'
 			async = async || true, // Default to async mode
 			req = this.ajaxObject(),
 			ctx = ctx || window;
@@ -317,8 +317,8 @@
 			req.open(method,url,async);
 
 			// Set extra headers passed to ajax()
-			if (arguments.length > 4) {
-				for (var i = 4; i < arguments.length; i++){
+			if (arguments.length > 7) {
+				for (var i = 7; i < arguments.length; i++){
 					if (arguments[i][0] && arguments[i][0]){
 						req.setRequestHeader(arguments[i][0], arguments[i][1]);
 					}
