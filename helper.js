@@ -1,13 +1,13 @@
-/*
+/**
  * Helper JS v0.12
  * Simple vanilla JS offering
- * some common helpers to accompany
- * your vanilla JS:ing. Some is written
+ * some common helpers. Some is written
  * by jrudenstam but not where other 
- * source is providen, but it might have been improved
+ * source is providen, but it might
+ * have been improved.
  *
  * Author: jrudenstam
- * http://typisktmig.se
+ * http://jrudenstam.se
  */
 
  (function (root, factory) {
